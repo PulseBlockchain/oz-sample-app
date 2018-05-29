@@ -6,6 +6,8 @@ Here is the external env
 - truffle 4.1.11
 - Ganache CLI v6.1.0 (ganache-core: 2.1.0)
 
+# Solution
+Ensure start time is in the future.
 ## Error
 `truffle migrate` gives this error:
 

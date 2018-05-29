@@ -5,7 +5,10 @@ let moment = require('moment')
 const multiplier = 10 ** 18
 
 module.exports = function (deployer) {
-  const startTime = Math.round(moment().subtract(1, 'd').valueOf() / 1000) // Yesterday
+  //const startTime = Math.round(moment().subtract(1, 'd').valueOf() / 1000) // Yesterday
+
+  // set start time slightly in the future or comment our the future check in TimedCrowdsale.
+  const startTime = Math.round(moment().add(1, 'm').valueOf() / 1000)
   const endTime = Math.round(moment().add(20, 'd').valueOf() / 1000) // Today + 20 days
 
   return deployer
