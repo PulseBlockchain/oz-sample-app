@@ -8,10 +8,9 @@ module.exports = function (deployer) {
   const startTime = Math.round(moment().subtract(1, 'd').valueOf() / 1000) // Yesterday
   const endTime = Math.round(moment().add(20, 'd').valueOf() / 1000) // Today + 20 days
 
-
   return deployer
     .then(() => {
-      return deployer.deploy(SampleToken);
+      return deployer.deploy(SampleToken)
     })
     .then(() => {
       return deployer.deploy(SampleCrowdsale,
@@ -22,13 +21,12 @@ module.exports = function (deployer) {
         2 * multiplier, // 2 ETH
         500 * multiplier, // 500 ETH
         SampleToken.address
-      );
+      )
     }).then(() => {
-      let tokenInstance = SampleToken.at(Token.address);
-      tokenInstance.transferOwnership(SampleCrowdsale.address);
+      let tokenInstance = SampleToken.at(SampleToken.address)
+      tokenInstance.transferOwnership(SampleCrowdsale.address)
     }).catch(function (err) {
       console.log('Deplyoment failed')
       console.log(err)
     })
 }
-
