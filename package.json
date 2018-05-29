@@ -1,0 +1,22 @@
+{
+  "name": "SampleCrowdsale",
+  "version": "1.0.0",
+  "description": "Sample Crowdsale and Token Contracts",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sample Blockchain",
+  "license": "ISC",
+  "devDependencies": {
+    "openzeppelin-solidity": "1.9.0",
+    "moment": "2.19.2"
+  },
+  "engines": {
+    "node": "8.9.x",
+    "npm": "5.5.x"
+  }
+}
