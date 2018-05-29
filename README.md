@@ -1,6 +1,7 @@
 # Crowdsale deployment issue with OZ 1.9.0
 Here is the external env
 
+- macOS High Sierra 10.13.4 (17E202) 
 - node.js 8.9.4, npm 5.6.0
 - truffle 4.1.11
 - Ganache CLI v6.1.0 (ganache-core: 2.1.0)
