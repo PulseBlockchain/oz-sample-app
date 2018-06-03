@@ -7,7 +7,7 @@ and enhanced it a bit as we are building the  [Pulse](https://pulseagent.co) MVP
 * Instead of removing an assertion in CrowdSale about beginTime (error prone on OZ upgrades) uses 
 [`increaseTime`](https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/test/helpers/increaseTime.js) from OZ test helpers. 
 * async/await for tests
-* BigNumber for assertions to deal with real life ICO weis 
+* BigNumber for assertions to deal with real life ICO `wei`s 
 * Platform Contract that uses the ERC20 Token
 * Using [ECRecovery](https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/ECRecovery.sol) 
 approach for [signature oriented contract interaction](https://blog.hellobloom.io/how-to-make-a-user-friendly-ethereum-dapp-5a7e5ea6df22?gi=b673200bb728) to save gas for users 
