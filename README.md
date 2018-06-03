@@ -7,7 +7,8 @@ and enhanced it a bit as we are building the  [Pulse](https://pulseagent.co) MVP
 * async/await for tests
 * BigNumber for assertions to deal with real life ICO weis 
 * Platform Contract that uses the ERC20 Token
- 
+* Using [ECRecovery](https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/ECRecovery.sol) 
+approach for [signature oriented contract interaction](https://blog.hellobloom.io/how-to-make-a-user-friendly-ethereum-dapp-5a7e5ea6df22?gi=b673200bb728) to save gas for users 
 ## Stack
 - macOS High Sierra 10.13.4 (17E202) 
 - node.js 8.9.4, npm 5.6.0
@@ -44,7 +45,7 @@ Compiling openzeppelin-solidity/contracts/token/ERC20/MintableToken.sol...
 Compiling openzeppelin-solidity/contracts/token/ERC20/StandardToken.sol...
 
 Compilation warnings encountered:
---- removed some warnings from OZ due to solidity version ---
+--- removed some warnings from OZ due to it not using constructor ---
 
 Deployment: TestCrowdsale at 0x0df4468bcf37a5c8c4612b204a45b72cd1664547 and TestToken at 0x0c3ceb2880c3f8f4d2740d5bf9932a7f90d600ac
 Deployment: TestPlatform at 0x7daadd4eeada6aa4476af0ccf0f696b227a969b4 owned by 0xce42bdb34189a93c55de250e011c68faee374dd3
