@@ -4,6 +4,8 @@ We learned from [Hashnode tutorial](https://github.com/sandeeppanda92/HashnodeTe
 and enhanced it a bit as we are building the  [Pulse](https://pulseagent.co) MVP.
 ## Enhancements
 * Upgrade to OZ 1.9.0
+* Instead of removing an assertion in CrowdSale about beginTime (error prone on OZ upgrades) uses 
+[`increaseTime`](https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/test/helpers/increaseTime.js) from OZ test helpers. 
 * async/await for tests
 * BigNumber for assertions to deal with real life ICO weis 
 * Platform Contract that uses the ERC20 Token
