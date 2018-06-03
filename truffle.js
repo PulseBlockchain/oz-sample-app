@@ -1,3 +1,6 @@
+// Allows us to use ES6 in our migrations and tests.
+require('babel-register')
+
 let truffleOptions  = {
   // See <http://truffleframework.com/docs/advanced/configuration>
   // to customize your Truffle configuration!
