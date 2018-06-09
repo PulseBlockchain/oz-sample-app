@@ -3,7 +3,7 @@
 We learned from [Hashnode tutorial](https://github.com/sandeeppanda92/HashnodeTestCrowdsale)
 and enhanced it a bit as we are building the  [Pulse](https://pulseagent.co) MVP.
 ## Enhancements
-* Upgrade to OZ 1.9.0
+* Upgrade to OZ 1.10.0
 * Instead of removing an assertion in CrowdSale about beginTime (error prone on OZ upgrades) uses 
 [`increaseTime`](https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/test/helpers/increaseTime.js) from OZ test helpers. 
 * async/await for tests
@@ -15,7 +15,7 @@ approach for [signature oriented contract interaction](https://blog.hellobloom.i
 - macOS High Sierra 10.13.4 (17E202) 
 - node.js 8.9.4, npm 5.6.0
 - truffle 4.1.11
-- Open Zeppelin 1.9.0
+- Open Zeppelin 1.10.0
 - Ganache CLI v6.1.0 (ganache-core: 2.1.0)
 
 ## Running
