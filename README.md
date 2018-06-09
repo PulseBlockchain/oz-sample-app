@@ -1,7 +1,7 @@
 # Hashnode+
 
 We learned from [Hashnode tutorial](https://github.com/sandeeppanda92/HashnodeTestCrowdsale)
-and enhanced it a bit as we are building the  [Pulse](https://pulseagent.co) MVP.
+and enhanced it a bit as we recently built the  [Pulse](https://pulseagent.co) [MVP](https://dapp.pulseagent.co).
 ## Enhancements
 * Upgrade to OZ 1.10.0
 * Instead of removing an assertion in CrowdSale about beginTime (error prone on OZ upgrades) uses 
