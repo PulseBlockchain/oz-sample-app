@@ -122,7 +122,7 @@ contract TestCrowdsale is CappedCrowdsale, RefundableCrowdsale, MintedCrowdsale 
     // ====================================================================
 
 
-    function finish(address _teamFund, address _growthFund, address _bountyFund) public onlyOwner {
+    function finish(address _teamFund, address _growthFund, address _bountyFund, address _newTokenOwner) public onlyOwner {
 
         require(!isFinalized);
         uint256 alreadyMinted = token.totalSupply();
@@ -137,6 +137,7 @@ contract TestCrowdsale is CappedCrowdsale, RefundableCrowdsale, MintedCrowdsale 
         ttoken.mint(_teamFund,tokensForTeam);
         ttoken.mint(_growthFund,tokensForGrowth);
         ttoken.mint(_bountyFund,tokensForBounty);
+        ttoken.transferOwnership(_newTokenOwner);
         finalize();
     }
     // ===============================

@@ -153,7 +153,7 @@ contract('TestPlatform', function ([owner, wallet, teamFund, growthFund, bountyF
       let vaultBalance = await web3.eth.getBalance(vaultAddress)
 
       await increaseTimeTo(afterClosingTime)
-      await crowdsale.finish(teamFund, growthFund, bountyFund)
+      await crowdsale.finish(teamFund, growthFund, bountyFund, platform.address)
 
       let newWalletBalance = await web3.eth.getBalance(wallet)
       assert.equal(newWalletBalance.toNumber(), walletBalance.plus(vaultBalance).toNumber(), 'Vault balance couldn\'t be sent to the wallet')
@@ -259,6 +259,9 @@ contract('TestPlatform', function ([owner, wallet, teamFund, growthFund, bountyF
       // assume this is done via Metamask on the browser by the bidder/seller
       await token.approve(toAccount, transferAmount, {from: fromAccount})
       let status
+      console.log(`Platform address = ${platform.address}`)
+      console.log(`Platform owner = ${platformContractOwner}`)
+      console.log(`Token owner = ${await token.owner()}`)
       status = await platform.sendBid(seller1, bidCost, hash, sig, {from: platformContractOwner})
       console.log(`Seller bid recorded with txHash = ${status.tx}`)
       // TODO: contract should do the following but throwing a revert for some reason.
