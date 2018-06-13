@@ -259,9 +259,8 @@ contract('TestPlatform', function ([owner, wallet, teamFund, growthFund, bountyF
       // assume this is done via Metamask on the browser by the bidder/seller
       await token.approve(toAccount, transferAmount, {from: fromAccount})
       let status
-      console.log(`Platform address = ${platform.address}`)
-      console.log(`Platform owner = ${platformContractOwner}`)
-      console.log(`Token owner = ${await token.owner()}`)
+      const tokenOwner = await token.owner()
+      assert(tokenOwner, platform.address)
       status = await platform.sendBid(seller1, bidCost, hash, sig, {from: platformContractOwner})
       console.log(`Seller bid recorded with txHash = ${status.tx}`)
       // TODO: contract should do the following but throwing a revert for some reason.
