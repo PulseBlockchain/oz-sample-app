@@ -25,11 +25,13 @@ contract TestPlatform is Ownable {
     function sendBid(address _bidder, uint256 bidCost, bytes32 _bidHash,bytes _signedBidMessage)  external returns (bool success) {
         require(_bidHash.recover(_signedBidMessage) == _bidder);
         require(testToken.balanceOf(_bidder) > bidCost);
-        uint256 allowance = testToken.allowance(_bidder, msg.sender);
+        address me = address(this);
+        uint256 allowance = testToken.allowance(_bidder, me);
         require(allowance > bidCost);
         emit DebugEvent("Sender Sender Allowance is", allowance);
         //TODO: this is throwing a revert even if caller has allowance
-        //testToken.transferFrom(_bidder, msg.sender, bidCost);
+        testToken.transferFrom(_bidder, me, bidCost);
+        testToken.transfer(msg.sender,bidCost);
         return true;
     }
 
