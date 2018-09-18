@@ -1,6 +1,6 @@
 pragma solidity ^0.4.23;
 
-import "./Escrow.sol";
+import "./TestEscrow.sol";
 
 contract TestIntent {
     
@@ -42,7 +42,7 @@ contract TestIntent {
         birs[_id] = bir;
         buyerBIRs[_buyer][_id] = bir;
 
-        birEscrow[_id] = address(new Escrow(_id, _buyer));
+        birEscrow[_id] = address(new TestEscrow(_id, _buyer));
         emit NewBIR(_id,_buyer, _catSubCat, birEscrow[_id]);
         return true;
     }
