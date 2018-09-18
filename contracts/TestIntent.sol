@@ -1,14 +1,14 @@
 pragma solidity ^0.4.23;
 
-import "./Escrow.sol";
+import "./TestEscrow.sol";
 
 contract TestIntent {
-    
+
     enum BIRState {Created, Responded,  Settled}
     mapping(address => mapping (bytes12 => BIR)) buyerBIRs;
     mapping (bytes12 => BIR) birs;
     mapping (bytes12 => address) birEscrow;
-    event NewBIR(bytes12 _id, address _buyer, bytes32 _catSubCat, address _escrow);
+    event NewBIR(bytes12 _id, address _buyer, string _catSubCat, address _escrow);
 
     struct Bid {
         address bidder; // could be seller or expert
@@ -29,22 +29,22 @@ contract TestIntent {
         bytes12 id;
         address buyer;
         BIRState state;
-        bytes32 catSubCat;
+        string catSubCat;
         mapping (address => Bid) sellers;
 
     }
-    
-    
-    function createBIR(bytes12 _id, address _buyer, bytes32 _catSubCat ) external returns (bool success){
+
+
+    function createBIR(bytes12 _id, address _buyer, string _catSubCat) external returns (bool success){
 
         BIR memory bir = BIR({id: _id, buyer: _buyer, state: BIRState.Created, catSubCat: _catSubCat});
 
         birs[_id] = bir;
         buyerBIRs[_buyer][_id] = bir;
 
-        birEscrow[_id] = address(new Escrow(_id, _buyer));
+        birEscrow[_id] = address(new TestEscrow(_id, _buyer));
         emit NewBIR(_id,_buyer, _catSubCat, birEscrow[_id]);
         return true;
     }
-  
+
 }
