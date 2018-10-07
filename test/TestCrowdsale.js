@@ -9,6 +9,7 @@ import { private_keys as PRIVATE_KEYS } from '../ganache-accounts.json'
 
 import sigUtil from 'eth-sig-util'
 import ethUtil from 'ethereumjs-util'
+import * as bir from './data/BIR-algo-test'
 
 const BigNumber = web3.BigNumber
 
@@ -226,36 +227,36 @@ contract('TestPlatform', function ([owner, wallet, teamFund, growthFund, bountyF
   })
 
   describe('Platform Tests', function () {
-    it('Should register a  bid on the blockchain, and confirm test tokens were deducted for the cost of the action', async () => {
-      const bidCost = 10 * multiplier
-      const sellerBalance = await token.balanceOf(seller1)
-      const message = `BID:${bidCost}`
-      const signAddress = seller1
-      const sig = web3.eth.sign(signAddress, web3.sha3(message))
-      const hash = hashMessage(message)
+    it('should create an intent', async () => {
+      const catSubcat = `${bir.category.name}:${bir.category.subCategory.name}`
+      let actions = bir.actions.map(action => action.actionType)
+      let costs = bir.actions.map(action => ether(action.cost))
+      let status = await platform.createBIR(bir.id, buyer, catSubcat)
+      // console.log(`Created BIR with txHash = ${status.tx}`)
+      await platform.setActionCosts(bir.id, actions, costs)
+      const bcBIR = await platform.getBIR(bir.id)
+      bcBIR[0].should.be.equal(buyer)
+      bcBIR[2].should.be.equal(catSubcat)
+    })
 
-      // const bcBIR = await platform.getBIR(bir.id)
-      // const escrowAddress = bcBIR[4];
-      const transferAmount = 100 * multiplier
-      const fromAccount = seller1
-      // const toAccount = growthFund
-      const toAccount = platform.address
-
-      // assume this is done via Metamask on the browser by the bidder/seller
-      await token.approve(toAccount, transferAmount, {from: fromAccount})
-      const tokenOwner = await token.owner()
-      assert(tokenOwner, platform.address)
-      const growthFundBalance = await token.balanceOf(growthFund)
-      let status = await platform.sendBid(fromAccount, bidCost, hash, sig, {from: growthFund})
-      // console.log(`Seller bid recorded with txHash = ${status.tx}`)
-      // TODO: contract should do the following but throwing a revert for some reason.
-      // status = await token.transferFrom(fromAccount, toAccount, transferAmount, {from: platformContractOwner})
-      // console.log(`Seller test paid for bid txHash = ${status.tx}`)
-      const newBalance = await token.balanceOf(seller1)
-      const newGrowthFundBalance = await token.balanceOf(growthFund)
-      // console.log(growthFundBalance)
-      newBalance.should.be.bignumber.equal(sellerBalance.minus(bidCost))
-      newGrowthFundBalance.should.be.bignumber.equal(growthFundBalance.plus(bidCost))
+    it('Should register two seller bids for the intent using action type strings, verify signatures and  confirm that bid pulse deducted matches escrow balance', async () => {
+      const bids = [{seller: seller1, actionType: 'CPO'},
+        {seller: seller2, actionType: 'CPC'}]
+      let bidTotal = new BigNumber(0)
+      await Promise.all(bids.map(async bid => {
+        const message = `${bir.id}:${bid.actionType}`
+        const sig = web3.eth.sign(bid.seller, web3.sha3(message))
+        const hash = hashMessage(message)
+        // console.log(`Seller ${bid.seller} Signature ${sig} and hash ${hash}`)
+        await token.approve(platform.address, 100*multiplier, {from: bid.seller})
+        let before = await token.balanceOf(bid.seller)
+        let status = await platform.sendBid(bir.id, bid.seller, bid.actionType, hash, sig, {from: platformContractOwner})
+        // console.log(`Seller ${bid.seller} bid recorded with txHash = ${status.tx}`)
+        let after = await token.balanceOf(bid.seller)
+        bidTotal = bidTotal.plus(before.minus(after))
+      }))
+      const escrowBalance = await platform.getEscrowBalance(bir.id)
+      escrowBalance.should.be.bignumber.equal(bidTotal)
     })
   })
 })

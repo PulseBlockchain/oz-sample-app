@@ -1,0 +1,169 @@
+{
+  "id": "2abde59212951f844b5e183e",
+  "buyerPublicKey": "0x4ccf51442c8b45e3518e10dc83b66886e8f22731",
+  "txHash" : "0x1502cf7eca37ae739704f0e92c59478972c0541698ca138d8e5b5886b66526d6",
+  "message": "Hello World",
+  "messageHash": "0xa1de988600a42c4b4ab089b619297c17d53cffae5d5120d82d8a92d0bb3b78f2",
+  "signature": "0xcc896d9d3cd50ff39f35f79787687f2d1440600c8fba62771df3ff670b644bf00cf1cba6eb8b3c10f48fc7a9eaf79ec61482e311c163cfb98a8fe89de8f3f78e1b",
+  "category": {
+    "id": "5aebe1104f1f032a98049e5d",
+    "name": "Software as a Service",
+    "subCategory": {
+      "name": "Marketing",
+      "questions": [
+        {
+          "text": "What type of tool are you looking for?",
+          "answer": "SEO"
+        },
+        {
+          "text": "What is the name of your web site?",
+          "answer": "engage.io"
+        },
+        {
+          "text": "What is Your Budget Per Month?",
+          "answer": "$5000-$10000"
+        },
+        {
+          "text": "Timeframe for Decision",
+          "answer": "ASAP"
+        },
+        {
+          "text": "Please provide any other details that might be useful to providers and experts",
+          "answer": "We currently use Moz. But it does not suit our needs. SEO is top priority for CEO."
+        }
+      ]
+    }
+  },
+  "buyerInfo": {
+    "id": "5abde59212951f844b5e183e",
+    "email": "jakemiller@engage.io",
+    "firstName": "Jake",
+    "lastName": "Miller",
+    "businessName": "Engagio",
+    "address": "3231 Second Street Pleasanton, CA 94566"
+  },
+  "state" : "PulseIQ",
+  "actions": [
+    {
+      "cost": 10,
+      "name": "Open",
+      "actionType": "CPO"
+    },
+    {
+      "cost": 20,
+      "name": "Conversation",
+      "actionType": "CPC"
+    },
+    {
+      "cost": 50,
+      "name": "Appointment",
+      "actionType": "CPA"
+    }
+  ],
+  "pulseIQ" : {
+    "quality" : 4,
+    "responses" : 3,
+    "engagementTime" : 14,
+    "sellerRating" : 4,
+    "expertRating" : 4,
+    "score" : 5
+  },
+  "settlementPercents": {
+    "quarterly": {
+      "topSellers": 33,
+      "topBuyers": 33,
+      "topExperts": 33
+    },
+    "gasFund": 15,
+    "buyer": {
+      "floor": 10,
+      "ceiling": 15
+    },
+    "seller": {
+      "floor": 15,
+      "ceiling": 25
+    },
+    "expert": {
+      "floor": 5,
+      "ceiling": 10
+    },
+    "growthFund": 15,
+    "foundationFund": 10,
+    "bonusFund": {
+      "floor": 10,
+      "ceiling": 30
+    }
+  },
+  "pulseIQWeights": {
+    "buyer": {
+      "quality": 0.4,
+      "responses": 0.3,
+      "engagementTime": 0.1,
+      "sellerRating": 0.1,
+      "expertRating": 0.1
+    },
+    "seller": {
+      "rating": 0.7,
+      "engagementTime": 0.1,
+      "conversationHealth": 0.1,
+      "timeliness": 0.1
+    },
+    "expert": {
+      "rating": 0.7,
+      "engagementTime": 0.1,
+      "conversationHealth": 0.1,
+      "timeliness": 0.1
+    }
+  },
+  "sellers" : [
+    {
+      "id" : "22bde59212951f844b5e183e",
+      "publicKey": "0x08aba4448bf7ee5ba13c5f4797ffe653d11c6c02",
+      "tx" : "",
+      "bid" : "CPO",
+      "message": "{\"intentId\":\"5b1635195feb1bc71f38427d\",\"actionType\":\"CPO\"}",
+      "messageHash": "0xfa6c2cd5ab7974c0fbfa19103bebf006e8d5363c812f7718e5ecf09a5b294fd2",
+      "signature": "0x1fd3ecd306a0807ce4e02048573bda2a9fc28a7df83d2bd7d081ecfa612a9c9338b34b707c623c597e05e9d10d02610265ce5fc73d07a2dba2376570a21cf58501",
+      "conversation" : "QmP9XGszXbHeEKU88Evyxz1YrF4RGaCRy9a5yoDQUidf1x",
+      "buyerActions" : ["CPO"],
+      "pulseIQ" : {
+        "timeliness" : 2,
+        "rating" : 4,
+        "engagementTime" : 5,
+        "conversationHealth" : 3,
+        "score" : 3
+      }
+    },
+    {
+      "id" : "5af6954b1dfb83e95abb3477",
+      "publicKey": "0x44F1a493787A29d38C216f592d4a1c84D89CAad1",
+      "tx" : "",
+      "bid" : "CPA",
+      "conversation" : "QmPwMpwnrveSUpyMoZMzKMVhz3NJLQfzefvCN5si38x5nU",
+      "pulseIQ" : {
+        "timeliness" : 5,
+        "rating" : 2,
+        "engagementTime" : 1,
+        "conversationHealth" : 2,
+        "score" : 2
+      },
+      "buyerActions" : ["CPO","CPC"]
+    }
+  ],
+  "experts" : [
+    {
+      "id" : "23bde59212951f844b5e183e",
+      "publicKey": "0x7ccf51442c8b45e3518e10dc83b66886e8f22731",
+      "tx" : "0xdc20ecfaba2cea41a8cb7e26e18724b4f82e2ffa669b2d18095afcabcbc1a4f5",
+      "conversation" : "QmQZF3ZdgnhDiDXBXXdZ3QT3wbmYEycRSNU3poV16BxpPV",
+      "pulseIQ" : {
+        "timeliness" : 5,
+        "rating" : 5,
+        "engagementTime" : 10,
+        "conversationHealth" : 5,
+        "kcUPVotes" : 42,
+        "score" : 5
+      }
+    }
+  ]
+}
