@@ -22,7 +22,7 @@ const TestCrowdsale = artifacts.require('TestCrowdsale')
 const TestToken = artifacts.require('TestToken')
 const TestPlatform = artifacts.require('TestPlatform')
 
-contract('TestPlatform', function ([owner, wallet, teamFund, growthFund, bountyFund, buyer, seller1, seller2, gasFund, foundationFund, bonusFund]) {
+contract('ICO Signature and Platform Tests', function ([owner, wallet, teamFund, growthFund, bountyFund, buyer, seller1, seller2, gasFund, foundationFund, bonusFund]) {
   let preRate = 30400, PRE_RATE, rate = 15200, RATE, GOAL, CAP
   let multiplier
   let crowdsale
@@ -226,7 +226,7 @@ contract('TestPlatform', function ([owner, wallet, teamFund, growthFund, bountyF
     })
   })
 
-  describe('Platform Tests', function () {
+  describe.skip('Platform Tests', function () {
     it('should create an intent', async () => {
       const catSubcat = `${bir.category.name}:${bir.category.subCategory.name}`
       let actions = bir.actions.map(action => action.actionType)
