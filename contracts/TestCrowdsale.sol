@@ -6,11 +6,13 @@ import 'openzeppelin-solidity/contracts/crowdsale/validation/CappedCrowdsale.sol
 import 'openzeppelin-solidity/contracts/crowdsale/validation/TimedCrowdsale.sol';
 import 'openzeppelin-solidity/contracts/crowdsale/distribution/RefundableCrowdsale.sol';
 import 'openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol';
-import "openzeppelin-solidity/contracts/token/ERC20/MintableToken.sol";
+import "openzeppelin-solidity/contracts/token/ERC20/ERC20Mintable.sol";
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
 
 
-contract TestCrowdsale is CappedCrowdsale, RefundableCrowdsale, MintedCrowdsale {
+
+contract TestCrowdsale is CappedCrowdsale, RefundableCrowdsale, MintedCrowdsale, Ownable {
 
 
     // ICO Stage
@@ -29,6 +31,7 @@ contract TestCrowdsale is CappedCrowdsale, RefundableCrowdsale, MintedCrowdsale 
     uint256 public totalTokensForSaleDuringPreICO = 380 * convMultiplier; // 30% of the 1.1B Crowdsale PULSE will be sold during PreICO
     uint256 public constant preRate = 80000; // pulse per ether during PreICO, reflecting a 50% discount
     uint256 public constant finalRate = 40000; // pulse per ether during ICO
+    uint256 public currentRate = 40000; // pulse per ether during ICO
     // ==============================
 
     // Amount raised in PreICO
@@ -47,7 +50,7 @@ contract TestCrowdsale is CappedCrowdsale, RefundableCrowdsale, MintedCrowdsale 
         uint256 _rate,
         address _wallet,
         uint256 _cap,
-        MintableToken _token,
+        ERC20Mintable _token,
         uint256 _goal
     )
     public
@@ -56,6 +59,7 @@ contract TestCrowdsale is CappedCrowdsale, RefundableCrowdsale, MintedCrowdsale 
     TimedCrowdsale(_openingTime, _closingTime)
     RefundableCrowdsale(_goal)
     {
+        currentRate = _rate;
         //As goal needs to be met for a successful crowdsale
         //the value needs to less or equal than a cap which is limit for accepted funds
         require(_goal <= _cap);
@@ -87,13 +91,17 @@ contract TestCrowdsale is CappedCrowdsale, RefundableCrowdsale, MintedCrowdsale 
 
     // Change the current rate
     function setCurrentRate(uint256 _rate) private {
-        rate = _rate;
+        currentRate = _rate;
+    }
+
+    function rate() public view returns(uint256) {
+        return currentRate;
     }
 
 
     function () external payable {
-        uint256 tokensThatWillBeMintedAfterPurchase = msg.value.mul(rate);
-        if ((stage == CrowdsaleStage.PreICO) && (token.totalSupply() + tokensThatWillBeMintedAfterPurchase > totalTokensForSaleDuringPreICO)) {
+        uint256 tokensThatWillBeMintedAfterPurchase = msg.value.mul(rate());
+        if ((stage == CrowdsaleStage.PreICO) && (token().totalSupply() + tokensThatWillBeMintedAfterPurchase > totalTokensForSaleDuringPreICO)) {
             msg.sender.transfer(msg.value); // Refund them
             emit EthRefunded("PreICO Limit Hit", tokensThatWillBeMintedAfterPurchase);
             return;
@@ -108,7 +116,7 @@ contract TestCrowdsale is CappedCrowdsale, RefundableCrowdsale, MintedCrowdsale 
 
     function _forwardFunds() internal {
         if (stage == CrowdsaleStage.PreICO) {
-            wallet.transfer(msg.value);
+            wallet().transfer(msg.value);
             emit EthTransferred("forwarding funds to wallet");
         } else if (stage == CrowdsaleStage.ICO) {
             emit EthTransferred("forwarding funds to refundable vault");
@@ -124,8 +132,8 @@ contract TestCrowdsale is CappedCrowdsale, RefundableCrowdsale, MintedCrowdsale 
 
     function finish(address _teamFund, address _growthFund, address _bountyFund, address _newTokenOwner) public onlyOwner {
 
-        require(!isFinalized);
-        uint256 alreadyMinted = token.totalSupply();
+        require(!finalized());
+        uint256 alreadyMinted = token().totalSupply();
         require(alreadyMinted < maxTokens);
 
         uint256 unsoldTokens = totalTokensForSale - alreadyMinted;
@@ -133,7 +141,7 @@ contract TestCrowdsale is CappedCrowdsale, RefundableCrowdsale, MintedCrowdsale 
             tokensForGrowth = tokensForGrowth + unsoldTokens;
         }
 
-        TestToken ttoken = TestToken(ERC20(token));
+        TestToken ttoken = TestToken(ERC20(token()));
         ttoken.mint(_teamFund,tokensForTeam);
         ttoken.mint(_growthFund,tokensForGrowth);
         ttoken.mint(_bountyFund,tokensForBounty);

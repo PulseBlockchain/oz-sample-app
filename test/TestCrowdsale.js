@@ -248,7 +248,7 @@ contract('TestPlatform', function ([owner, wallet, teamFund, growthFund, bountyF
         const sig = web3.eth.sign(bid.seller, web3.sha3(message))
         const hash = hashMessage(message)
         // console.log(`Seller ${bid.seller} Signature ${sig} and hash ${hash}`)
-        await token.approve(platform.address, 100*multiplier, {from: bid.seller})
+        await token.approve(platform.address, ether(100), {from: bid.seller})
         let before = await token.balanceOf(bid.seller)
         let status = await platform.sendBid(bir.id, bid.seller, bid.actionType, hash, sig, {from: platformContractOwner})
         // console.log(`Seller ${bid.seller} bid recorded with txHash = ${status.tx}`)

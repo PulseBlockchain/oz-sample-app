@@ -1,0 +1,201 @@
+
+oz-sample-app git:(master) ✗ truffle test
+Compiling ./contracts/ECRecovery.sol...
+Compiling ./contracts/Migrations.sol...
+Compiling ./contracts/TestCrowdsale.sol...
+Compiling ./contracts/TestEscrow.sol...
+Compiling ./contracts/TestPlatform.sol...
+Compiling ./contracts/TestToken.sol...
+Compiling openzeppelin-solidity/contracts/access/Roles.sol...
+Compiling openzeppelin-solidity/contracts/access/roles/MinterRole.sol...
+Compiling openzeppelin-solidity/contracts/access/roles/PauserRole.sol...
+Compiling openzeppelin-solidity/contracts/crowdsale/Crowdsale.sol...
+Compiling openzeppelin-solidity/contracts/crowdsale/distribution/FinalizableCrowdsale.sol...
+Compiling openzeppelin-solidity/contracts/crowdsale/distribution/RefundableCrowdsale.sol...
+Compiling openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol...
+Compiling openzeppelin-solidity/contracts/crowdsale/validation/CappedCrowdsale.sol...
+Compiling openzeppelin-solidity/contracts/crowdsale/validation/TimedCrowdsale.sol...
+Compiling openzeppelin-solidity/contracts/lifecycle/Pausable.sol...
+Compiling openzeppelin-solidity/contracts/math/SafeMath.sol...
+Compiling openzeppelin-solidity/contracts/ownership/Ownable.sol...
+Compiling openzeppelin-solidity/contracts/ownership/Secondary.sol...
+Compiling openzeppelin-solidity/contracts/payment/ConditionalEscrow.sol...
+Compiling openzeppelin-solidity/contracts/payment/Escrow.sol...
+Compiling openzeppelin-solidity/contracts/payment/RefundEscrow.sol...
+Compiling openzeppelin-solidity/contracts/token/ERC20/ERC20.sol...
+Compiling openzeppelin-solidity/contracts/token/ERC20/ERC20Burnable.sol...
+Compiling openzeppelin-solidity/contracts/token/ERC20/ERC20Mintable.sol...
+Compiling openzeppelin-solidity/contracts/token/ERC20/ERC20Pausable.sol...
+Compiling openzeppelin-solidity/contracts/token/ERC20/IERC20.sol...
+Compiling openzeppelin-solidity/contracts/token/ERC20/SafeERC20.sol...
+
+Compilation warnings encountered:
+
+openzeppelin-solidity/contracts/crowdsale/Crowdsale.sol:167:5: Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+    address beneficiary,
+    ^-----------------^
+,openzeppelin-solidity/contracts/crowdsale/Crowdsale.sol:168:5: Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+    uint256 weiAmount
+    ^---------------^
+,openzeppelin-solidity/contracts/crowdsale/Crowdsale.sol:209:5: Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+    address beneficiary,
+    ^-----------------^
+,openzeppelin-solidity/contracts/crowdsale/Crowdsale.sol:210:5: Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+    uint256 weiAmount
+    ^---------------^
+,openzeppelin-solidity/contracts/payment/RefundEscrow.sol:85:30: Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+  function withdrawalAllowed(address payee) public view returns (bool) {
+                             ^-----------^
+,/Users/vamsee/Development/blockchain/pulse/oz-sample-app/contracts/TestCrowdsale.sol:157:5: Warning: Function state mutability can be restricted to pure
+    function hasEnded() public view returns (bool) {
+    ^ (Relevant source part starts here and spans across multiple lines).
+,openzeppelin-solidity/contracts/crowdsale/Crowdsale.sol:151:3: Warning: Function state mutability can be restricted to pure
+  function _preValidatePurchase(
+  ^ (Relevant source part starts here and spans across multiple lines).
+,openzeppelin-solidity/contracts/crowdsale/Crowdsale.sol:166:3: Warning: Function state mutability can be restricted to pure
+  function _postValidatePurchase(
+  ^ (Relevant source part starts here and spans across multiple lines).
+,openzeppelin-solidity/contracts/crowdsale/Crowdsale.sol:208:3: Warning: Function state mutability can be restricted to pure
+  function _updatePurchasingState(
+  ^ (Relevant source part starts here and spans across multiple lines).
+,openzeppelin-solidity/contracts/crowdsale/distribution/FinalizableCrowdsale.sol:45:3: Warning: Function state mutability can be restricted to pure
+  function _finalization() internal {
+  ^ (Relevant source part starts here and spans across multiple lines).
+
+Deployment: TestCrowdsale at 0x5d093a0e0328ad17469b948de7f2dfd4b5ee5544 and TestToken at 0x162a36c9821eadecff9669a3940b7f72d055cd1c
+Deployment: TestPlatform at 0x1b5ccd66cc2408a0084047720167f6234dc5498a owned by 0xce42bdb34189a93c55de250e011c68faee374dd3
+
+
+  Contract: TestPlatform
+    ICO Tests
+      ✓ should create crowdsale, token and platform with correct parameters
+      ✓ should not accept payments before start (193ms)
+      ✓ should set stage to PreICO (44ms)
+      1) one ETH should buy 30400 Test Tokens in PreICO
+    > No events were emitted
+      2) should transfer the ETH to wallet immediately in Pre ICO
+    > No events were emitted
+      3) should set variable `totalWeiRaisedDuringPreICO` correctly
+    > No events were emitted
+      ✓ should set stage to ICO
+      4) one ETH should buy 15200 Test Tokens in ICO
+    > No events were emitted
+      5) Should reach our ICO goal
+    > No events were emitted
+      6) Escrow balance should be added to our wallet once ICO is over
+    > No events were emitted
+      7) Should perform normal token transfer
+    > No events were emitted
+      8) Should perform delegated token transfer using transferFrom
+    > No events were emitted
+    Signature Tests
+      ✓ Should recover signer by calling a solidity contract (125ms)
+      ✓ Should recover signer personal data with  eth-sig-util
+      ✓ Should recover signer typed data with  eth-sig-util
+    Platform Tests
+      ✓ should create an intent (98ms)
+      9) Should register two seller bids for the intent using action type strings, verify signatures and  confirm that bid pulse deducted matches escrow balance
+
+    Events emitted during test:
+    ---------------------------
+
+    Approval(owner: <indexed>, spender: <indexed>, value: 100000000000000000000)
+    Approval(owner: <indexed>, spender: <indexed>, value: 100000000000000000000)
+
+    ---------------------------
+
+
+  8 passing (2s)
+  9 failing
+
+  1) Contract: TestPlatform
+       ICO Tests
+         one ETH should buy 30400 Test Tokens in PreICO:
+     AssertionError: expected promise to be fulfilled but it was rejected with 'Error: VM Exception while processing transaction: revert'
+
+
+  2) Contract: TestPlatform
+       ICO Tests
+         should transfer the ETH to wallet immediately in Pre ICO:
+     Error: VM Exception while processing transaction: revert
+      at Object.InvalidResponse (/usr/local/lib/node_modules/truffle/build/webpack:/~/web3/lib/web3/errors.js:38:1)
+      at /usr/local/lib/node_modules/truffle/build/webpack:/~/web3/lib/web3/requestmanager.js:86:1
+      at /usr/local/lib/node_modules/truffle/build/webpack:/~/truffle-provider/wrapper.js:134:1
+      at XMLHttpRequest.request.onreadystatechange (/usr/local/lib/node_modules/truffle/build/webpack:/~/web3/lib/web3/httpprovider.js:128:1)
+      at XMLHttpRequestEventTarget.dispatchEvent (/usr/local/lib/node_modules/truffle/build/webpack:/~/xhr2/lib/xhr2.js:64:1)
+      at XMLHttpRequest._setReadyState (/usr/local/lib/node_modules/truffle/build/webpack:/~/xhr2/lib/xhr2.js:354:1)
+      at XMLHttpRequest._onHttpResponseEnd (/usr/local/lib/node_modules/truffle/build/webpack:/~/xhr2/lib/xhr2.js:509:1)
+      at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/truffle/build/webpack:/~/xhr2/lib/xhr2.js:469:1)
+      at endReadableNT (_stream_readable.js:1055:12)
+      at _combinedTickCallback (internal/process/next_tick.js:138:11)
+      at process._tickCallback (internal/process/next_tick.js:180:9)
+
+  3) Contract: TestPlatform
+       ICO Tests
+         should set variable `totalWeiRaisedDuringPreICO` correctly:
+     AssertionError: Total ETH raised in PreICO was not calculated correctly: expected 0 to equal { Object (s, e, ...) }
+      at Context.it (test/TestCrowdsale.js:112:14)
+      at <anonymous>
+      at process._tickCallback (internal/process/next_tick.js:188:7)
+
+  4) Contract: TestPlatform
+       ICO Tests
+         one ETH should buy 15200 Test Tokens in ICO:
+     AssertionError: expected promise to be fulfilled but it was rejected with 'Error: VM Exception while processing transaction: revert'
+
+
+  5) Contract: TestPlatform
+       ICO Tests
+         Should reach our ICO goal:
+     AssertionError: expected promise to be fulfilled but it was rejected with 'Error: VM Exception while processing transaction: revert'
+
+
+  6) Contract: TestPlatform
+       ICO Tests
+         Escrow balance should be added to our wallet once ICO is over:
+     Error: VM Exception while processing transaction: revert
+      at Object.InvalidResponse (/usr/local/lib/node_modules/truffle/build/webpack:/~/web3/lib/web3/errors.js:38:1)
+      at /usr/local/lib/node_modules/truffle/build/webpack:/~/web3/lib/web3/requestmanager.js:86:1
+      at /usr/local/lib/node_modules/truffle/build/webpack:/~/truffle-provider/wrapper.js:134:1
+      at XMLHttpRequest.request.onreadystatechange (/usr/local/lib/node_modules/truffle/build/webpack:/~/web3/lib/web3/httpprovider.js:128:1)
+      at XMLHttpRequestEventTarget.dispatchEvent (/usr/local/lib/node_modules/truffle/build/webpack:/~/xhr2/lib/xhr2.js:64:1)
+      at XMLHttpRequest._setReadyState (/usr/local/lib/node_modules/truffle/build/webpack:/~/xhr2/lib/xhr2.js:354:1)
+      at XMLHttpRequest._onHttpResponseEnd (/usr/local/lib/node_modules/truffle/build/webpack:/~/xhr2/lib/xhr2.js:509:1)
+      at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/truffle/build/webpack:/~/xhr2/lib/xhr2.js:469:1)
+      at endReadableNT (_stream_readable.js:1055:12)
+      at _combinedTickCallback (internal/process/next_tick.js:138:11)
+      at process._tickCallback (internal/process/next_tick.js:180:9)
+
+  7) Contract: TestPlatform
+       ICO Tests
+         Should perform normal token transfer:
+     AssertionError: From account balance should be atleast 100: expected 0 to be at least 100000000000000000000
+      at Function.assert.isAtLeast (/usr/local/lib/node_modules/truffle/build/webpack:/~/chai/lib/chai/interface/assert.js:274:1)
+      at Context.it (test/TestCrowdsale.js:156:14)
+      at <anonymous>
+      at process._tickCallback (internal/process/next_tick.js:188:7)
+
+  8) Contract: TestPlatform
+       ICO Tests
+         Should perform delegated token transfer using transferFrom:
+     AssertionError: From account balance should be atleast 4: expected 0 to be at least 4000000000000000000
+      at Function.assert.isAtLeast (/usr/local/lib/node_modules/truffle/build/webpack:/~/chai/lib/chai/interface/assert.js:274:1)
+      at Context.it (test/TestCrowdsale.js:170:14)
+      at <anonymous>
+      at process._tickCallback (internal/process/next_tick.js:188:7)
+
+  9) Contract: TestPlatform
+       Platform Tests
+         Should register two seller bids for the intent using action type strings, verify signatures and  confirm that bid pulse deducted matches escrow balance:
+     Error: VM Exception while processing transaction: revert
+      at Object.InvalidResponse (/usr/local/lib/node_modules/truffle/build/webpack:/~/web3/lib/web3/errors.js:38:1)
+      at /usr/local/lib/node_modules/truffle/build/webpack:/~/web3/lib/web3/requestmanager.js:86:1
+      at /usr/local/lib/node_modules/truffle/build/webpack:/~/truffle-provider/wrapper.js:134:1
+      at XMLHttpRequest.request.onreadystatechange (/usr/local/lib/node_modules/truffle/build/webpack:/~/web3/lib/web3/httpprovider.js:128:1)
+      at XMLHttpRequestEventTarget.dispatchEvent (/usr/local/lib/node_modules/truffle/build/webpack:/~/xhr2/lib/xhr2.js:64:1)
+      at XMLHttpRequest._setReadyState (/usr/local/lib/node_modules/truffle/build/webpack:/~/xhr2/lib/xhr2.js:354:1)
+      at XMLHttpRequest._onHttpResponseEnd (/usr/local/lib/node_modules/truffle/build/webpack:/~/xhr2/lib/xhr2.js:509:1)
+      at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/truffle/build/webpack:/~/xhr2/lib/xhr2.js:469:1)
+      at endReadableNT (_stream_readable.js:1055:12)
+      at _combinedTickCallback (internal/process/next_tick.js:138:11)
+      at process._tickCallback (internal/process/next_tick.js:180:9)
