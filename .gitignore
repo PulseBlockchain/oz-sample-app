@@ -7,3 +7,5 @@ tmp/
 temp/
 .hot/
 dist/
+build/
+yarn.lock

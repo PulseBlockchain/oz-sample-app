@@ -43,6 +43,7 @@ contract('ICO Signature and Platform Tests', function ([owner, wallet, teamFund,
     crowdsale = await TestCrowdsale.deployed()
     const tokenAddress = await crowdsale.token.call()
     token = TestToken.at(tokenAddress)
+    await token.addMinter(crowdsale.address)
     multiplier = 10 ** (await token.decimals())
     rate = await crowdsale.finalRate()
     RATE = new BigNumber(rate)
@@ -226,7 +227,7 @@ contract('ICO Signature and Platform Tests', function ([owner, wallet, teamFund,
     })
   })
 
-  describe.skip('Platform Tests', function () {
+  describe('Platform Tests', function () {
     it('should create an intent', async () => {
       const catSubcat = `${bir.category.name}:${bir.category.subCategory.name}`
       let actions = bir.actions.map(action => action.actionType)
