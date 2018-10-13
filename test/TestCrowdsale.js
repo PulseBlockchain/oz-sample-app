@@ -201,18 +201,35 @@ contract('ICO Signature and Platform Tests', function ([owner, wallet, teamFund,
     })
 
     it('Should recover signer typed data with  eth-sig-util', async () => {
-      const msgParams = [
-        {
-          type: 'string',
-          name: 'Message',
-          value: 'Hi, Alice!'
+      const typedData = {
+        types: {
+            EIP712Domain: [
+                { name: 'name', type: 'string' },
+                { name: 'version', type: 'string' },
+                { name: 'chainId', type: 'uint256' },
+                { name: 'verifyingContract', type: 'address' },
+            ],
+            Person: [
+                { name: 'name', type: 'string' },
+                { name: 'wallet', type: 'address' }
+            ],
+            Mail: [
+                { name: 'from', type: 'Person' },
+                { name: 'to', type: 'Person' },
+                { name: 'contents', type: 'string' }
+            ],
         },
-        {
-          type: 'uint32',
-          name: 'A number',
-          value: '1337'
+        primaryType: 'Person',
+        domain: {
+            name: 'Person chat',
+            version: '1',
+            chainId: 1,
+        },
+        message: {
+                name: 'Testing',
+                wallet: '0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826',
+            }
         }
-      ]
 
       /*
         const hash = sigUtil.typedSignatureHash(msgParams)
@@ -221,8 +238,8 @@ contract('ICO Signature and Platform Tests', function ([owner, wallet, teamFund,
       const signAddress = owner
       const keyOnly = PRIVATE_KEYS[signAddress]
       const pkeyBuffer = Buffer.from(keyOnly, 'hex')
-      const sig = sigUtil.signTypedData(pkeyBuffer, {data: msgParams})
-      const recovered = sigUtil.recoverTypedSignature({data: msgParams, sig: sig})
+      const sig = sigUtil.signTypedData(pkeyBuffer, {data: typedData})
+      const recovered = sigUtil.recoverTypedSignature({data: typedData, sig: sig})
       assert.equal(signAddress, recovered, 'Recovered address should be same as signAddress')
     })
   })
