@@ -227,7 +227,7 @@ contract('ICO Signature and Platform Tests', function ([owner, wallet, teamFund,
     })
   })
 
-  describe.skip('Platform Tests', function () {
+  describe('Platform Tests', function () {
     it('should create an intent', async () => {
       const catSubcat = `${bir.category.name}:${bir.category.subCategory.name}`
       let actions = bir.actions.map(action => action.actionType)
