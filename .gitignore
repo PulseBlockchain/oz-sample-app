@@ -9,3 +9,4 @@ temp/
 dist/
 build/
 yarn.lock
+package-lock.json
