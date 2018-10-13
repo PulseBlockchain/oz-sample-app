@@ -37,7 +37,7 @@ start_ganache() {
 
 
   #ganache-cli --gasLimit 0xfffffffffff "${accounts[@]}" --acctKeys ganache-accounts.json > /dev/null &
-  ganache-cli --gasLimit 0xfffffffffff "${accounts[@]}" --acctKeys ganache-accounts.json
+  ./node_modules/.bin/ganache-cli --gasLimit 0xfffffffffff "${accounts[@]}" --acctKeys ganache-accounts.json
 
   ganache_pid=$!
 }
