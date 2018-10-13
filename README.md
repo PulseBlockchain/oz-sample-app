@@ -3,7 +3,7 @@
 We learned from [Hashnode tutorial](https://github.com/sandeeppanda92/HashnodeTestCrowdsale)
 and enhanced it a bit as we recently built the  [Pulse](https://pulseagent.co) [MVP](https://dapp.pulseagent.co).
 ## Enhancements
-* Upgrade to OZ 1.12.0, web3 1.0.0-beta.36
+* Upgrade to OZ 2.0.0-rc.1 and web3 1.0.0-beta.36
 * Instead of removing an assertion in CrowdSale about beginTime (error prone on OZ upgrades) uses 
 [`increaseTime`](https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/test/helpers/increaseTime.js) from OZ test helpers. 
 * [async/await](https://javascript.info/async-await) for [tests](test/TestCrowdsale.js)

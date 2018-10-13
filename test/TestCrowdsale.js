@@ -22,7 +22,7 @@ const TestCrowdsale = artifacts.require('TestCrowdsale')
 const TestToken = artifacts.require('TestToken')
 const TestPlatform = artifacts.require('TestPlatform')
 
-contract('TestPlatform', function ([owner, wallet, teamFund, growthFund, bountyFund, buyer, seller1, seller2, gasFund, foundationFund, bonusFund]) {
+contract('ICO Signature and Platform Tests', function ([owner, wallet, teamFund, growthFund, bountyFund, buyer, seller1, seller2, gasFund, foundationFund, bonusFund]) {
   let preRate = 30400, PRE_RATE, rate = 15200, RATE, GOAL, CAP
   let multiplier
   let crowdsale
@@ -43,6 +43,7 @@ contract('TestPlatform', function ([owner, wallet, teamFund, growthFund, bountyF
     crowdsale = await TestCrowdsale.deployed()
     const tokenAddress = await crowdsale.token.call()
     token = TestToken.at(tokenAddress)
+    await token.addMinter(crowdsale.address)
     multiplier = 10 ** (await token.decimals())
     rate = await crowdsale.finalRate()
     RATE = new BigNumber(rate)
