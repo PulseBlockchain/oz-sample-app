@@ -45,6 +45,7 @@ module.exports = function (deployer) {
       )
     }).then(() => {
       let tokenInstance = TestToken.at(TestToken.address)
+      tokenInstance.addMinter(TestCrowdsale.address)
       tokenInstance.transferOwnership(TestCrowdsale.address)
       console.log(`Deployment: TestCrowdsale at ${TestCrowdsale.address} and TestToken at ${TestToken.address}`)
     }).then(() => {
