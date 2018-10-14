@@ -34,7 +34,7 @@ contract('ICO Signature and Platform Tests', function ([owner, wallet, teamFund,
 
   let platform
   // const web3SendPromisified = promisify(web3.currentProvider.sendAsync)
-  const helloAlice = 'Hello Alice'
+  const helloAlice = 'Hi Alice'
 
   before(async () => {
     // Advance to the next block to correctly read time in the solidity "now" function interpreted by ganache
@@ -58,7 +58,7 @@ contract('ICO Signature and Platform Tests', function ([owner, wallet, teamFund,
     platformContractOwner = growthFund
   })
 
-  describe('ICO Tests', function () {
+  describe.skip('ICO Tests', function () {
     it('should create crowdsale, token and platform with correct parameters', async () => {
       crowdsale.should.exist
       token.should.exist
@@ -177,7 +177,28 @@ contract('ICO Signature and Platform Tests', function ([owner, wallet, teamFund,
     })
   })
   describe('Signature Tests', function () {
-    it('Should recover signer by calling a solidity contract', async () => {
+    it('Signature Hacking', async () => {
+      const message = 'Hi Alice'
+      const signAddress = '0xdf08f82de32b8d460adbe8d72043e3a7e25a3b39'
+      const privateKey = '2bdd21761a483f71054e14f5b827213567971c676928d9a1808cbfa4b7501200'
+
+      /*
+       signature below was obtained via code and live demo linked at
+       https://github.com/PulseBlockchain/js-eth-personal-sign-examples
+       (https://github.com/PulseBlockchain/js-eth-personal-sign-examples/blob/695d4b7c659bf59ae55bbc9291186a3a128fab6f/index.js#L19)
+       using web.personal.sign. Can get the same via https://www.mycrypto.com/sign-and-verify-message/sign
+        */
+      const sig = '0x4f119a7d11506784657816ae2ec055170943416dc7982d7ab298addb3ae1cf6046fbda59da911e897a23ec0b217f69a87b4a190d2d47ed7dfd10fcce6f401ea81b'
+
+      const { v, r, s } = ethUtil.fromRpcSig(sig)
+      console.log(v, r, s)
+      // https://gist.github.com/alexanderattar/29bef134239d5760b8d1fcc310b632be
+      const hash = hashMessage(message)
+      const recovered = await platform.recover(hash, sig)
+      assert.equal(signAddress, recovered, 'Recovered address should be same as signAddress')
+    })
+
+    it.skip('Should recover signer by calling a solidity contract', async () => {
       const message = helloAlice
       const signAddress = owner
       const sig = web3.eth.sign(signAddress, web3.sha3(message))
@@ -188,7 +209,7 @@ contract('ICO Signature and Platform Tests', function ([owner, wallet, teamFund,
       assert.equal(signAddress, recovered, 'Recovered address should be same as signAddress')
     })
 
-    it('Should recover signer personal data with  eth-sig-util', async () => {
+    it.skip('Should recover signer personal data with  eth-sig-util', async () => {
       const text = helloAlice
       const message = ethUtil.bufferToHex(Buffer.from(text, 'utf8'))
       const signAddress = owner
@@ -200,36 +221,36 @@ contract('ICO Signature and Platform Tests', function ([owner, wallet, teamFund,
       assert.equal(signAddress, recovered, 'Recovered address should be same as signAddress')
     })
 
-    it('Should recover signer typed data with  eth-sig-util', async () => {
+    it.skip('Should recover signer typed data with  eth-sig-util', async () => {
       const typedData = {
         types: {
-            EIP712Domain: [
-                { name: 'name', type: 'string' },
-                { name: 'version', type: 'string' },
-                { name: 'chainId', type: 'uint256' },
-                { name: 'verifyingContract', type: 'address' },
-            ],
-            Person: [
-                { name: 'name', type: 'string' },
-                { name: 'wallet', type: 'address' }
-            ],
-            Mail: [
-                { name: 'from', type: 'Person' },
-                { name: 'to', type: 'Person' },
-                { name: 'contents', type: 'string' }
-            ],
+          EIP712Domain: [
+            { name: 'name', type: 'string' },
+            { name: 'version', type: 'string' },
+            { name: 'chainId', type: 'uint256' },
+            { name: 'verifyingContract', type: 'address' }
+          ],
+          Person: [
+            { name: 'name', type: 'string' },
+            { name: 'wallet', type: 'address' }
+          ],
+          Mail: [
+            { name: 'from', type: 'Person' },
+            { name: 'to', type: 'Person' },
+            { name: 'contents', type: 'string' }
+          ]
         },
         primaryType: 'Person',
         domain: {
-            name: 'Person chat',
-            version: '1',
-            chainId: 1,
+          name: 'Person chat',
+          version: '1',
+          chainId: 1
         },
         message: {
-                name: 'Testing',
-                wallet: '0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826',
-            }
+          name: 'Testing',
+          wallet: '0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826'
         }
+      }
 
       /*
         const hash = sigUtil.typedSignatureHash(msgParams)
@@ -244,7 +265,7 @@ contract('ICO Signature and Platform Tests', function ([owner, wallet, teamFund,
     })
   })
 
-  describe('Platform Tests', function () {
+  describe.skip('Platform Tests', function () {
     it('should create an intent', async () => {
       const catSubcat = `${bir.category.name}:${bir.category.subCategory.name}`
       let actions = bir.actions.map(action => action.actionType)
@@ -266,7 +287,7 @@ contract('ICO Signature and Platform Tests', function ([owner, wallet, teamFund,
         const sig = web3.eth.sign(bid.seller, web3.sha3(message))
         const hash = hashMessage(message)
         // console.log(`Seller ${bid.seller} Signature ${sig} and hash ${hash}`)
-        await token.approve(platform.address, 100*multiplier, {from: bid.seller})
+        await token.approve(platform.address, 100 * multiplier, {from: bid.seller})
         let before = await token.balanceOf(bid.seller)
         let status = await platform.sendBid(bir.id, bid.seller, bid.actionType, hash, sig, {from: platformContractOwner})
         // console.log(`Seller ${bid.seller} bid recorded with txHash = ${status.tx}`)
