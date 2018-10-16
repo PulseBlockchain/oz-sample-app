@@ -191,7 +191,6 @@ contract('ICO Signature and Platform Tests', function ([owner, wallet, teamFund,
       const sig = '0x4f119a7d11506784657816ae2ec055170943416dc7982d7ab298addb3ae1cf6046fbda59da911e897a23ec0b217f69a87b4a190d2d47ed7dfd10fcce6f401ea81b'
 
       const { v, r, s } = ethUtil.fromRpcSig(sig)
-      console.log(v, r, s)
       // https://gist.github.com/alexanderattar/29bef134239d5760b8d1fcc310b632be
       const hash = hashMessage(message)
       const recovered = await platform.recover(hash, sig)
