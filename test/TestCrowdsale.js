@@ -2,7 +2,7 @@ import ether from './helpers/ether'
 import { advanceBlock } from './helpers/advanceToBlock'
 import { increaseTimeTo, duration } from './helpers/increaseTime'
 import EVMRevert from './helpers/EVMRevert'
-import hashMessage from './helpers/hashMessage'
+import {hashMessage, hashMessageMetamask} from './helpers/hashMessage'
 // thanks: https://github.com/OpenZeppelin/openzeppelin-solidity/tree/master/test/helpers
 
 import { private_keys as PRIVATE_KEYS } from '../ganache-accounts.json'
@@ -58,7 +58,7 @@ contract('ICO Signature and Platform Tests', function ([owner, wallet, teamFund,
     platformContractOwner = growthFund
   })
 
-  describe.skip('ICO Tests', function () {
+  describe('ICO Tests', function () {
     it('should create crowdsale, token and platform with correct parameters', async () => {
       crowdsale.should.exist
       token.should.exist
@@ -192,12 +192,12 @@ contract('ICO Signature and Platform Tests', function ([owner, wallet, teamFund,
 
       const { v, r, s } = ethUtil.fromRpcSig(sig)
       // https://gist.github.com/alexanderattar/29bef134239d5760b8d1fcc310b632be
-      const hash = hashMessage(message)
+      const hash = hashMessageMetamask(message)
       const recovered = await platform.recover(hash, sig)
       assert.equal(signAddress, recovered, 'Recovered address should be same as signAddress')
     })
 
-    it.skip('Should recover signer by calling a solidity contract', async () => {
+    it('Should recover signer by calling a solidity contract', async () => {
       const message = helloAlice
       const signAddress = owner
       const sig = web3.eth.sign(signAddress, web3.sha3(message))
@@ -208,7 +208,7 @@ contract('ICO Signature and Platform Tests', function ([owner, wallet, teamFund,
       assert.equal(signAddress, recovered, 'Recovered address should be same as signAddress')
     })
 
-    it.skip('Should recover signer personal data with  eth-sig-util', async () => {
+    it('Should recover signer personal data with  eth-sig-util', async () => {
       const text = helloAlice
       const message = ethUtil.bufferToHex(Buffer.from(text, 'utf8'))
       const signAddress = owner
@@ -220,7 +220,7 @@ contract('ICO Signature and Platform Tests', function ([owner, wallet, teamFund,
       assert.equal(signAddress, recovered, 'Recovered address should be same as signAddress')
     })
 
-    it.skip('Should recover signer typed data with  eth-sig-util', async () => {
+    it('Should recover signer typed data with  eth-sig-util', async () => {
       const typedData = {
         types: {
           EIP712Domain: [
@@ -264,7 +264,7 @@ contract('ICO Signature and Platform Tests', function ([owner, wallet, teamFund,
     })
   })
 
-  describe.skip('Platform Tests', function () {
+  describe('Platform Tests', function () {
     it('should create an intent', async () => {
       const catSubcat = `${bir.category.name}:${bir.category.subCategory.name}`
       let actions = bir.actions.map(action => action.actionType)
