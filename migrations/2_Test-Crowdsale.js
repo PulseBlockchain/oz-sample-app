@@ -1,13 +1,7 @@
-let ECRecovery = artifacts.require('../node_modules/openzeppelin-solidity/test/cryptography/ECDSA.sol')
+let ECDSA = artifacts.require('../node_modules/openzeppelin-solidity/test/cryptography/ECDSA.sol')
 let TestCrowdsale = artifacts.require('./TestCrowdsale.sol')
 let TestToken = artifacts.require('./TestToken.sol')
 let TestPlatform = artifacts.require('./TestPlatform.sol')
-
-module.exports = function (deployer) {
-  deployer.deploy(ECRecovery)
-  deployer.link(ECRecovery, TestPlatform)
-  deployer.deploy(TestPlatform)
-}
 
 // thanks https://github.com/OpenZeppelin/openzeppelin-solidity/tree/master/test/helpers
 const duration = {
@@ -29,7 +23,7 @@ module.exports = function (deployer) {
 
   return deployer
     .then(() => {
-      return deployer.deploy(ECRecovery)
+      return deployer.deploy(ECDSA)
     }).then(() => {
       return deployer.deploy(TestToken)
     })
@@ -49,7 +43,7 @@ module.exports = function (deployer) {
       tokenInstance.transferOwnership(TestCrowdsale.address)
       console.log(`Deployment: TestCrowdsale at ${TestCrowdsale.address} and TestToken at ${TestToken.address}`)
     }).then(() => {
-      deployer.link(ECRecovery, TestPlatform)
+      deployer.link(ECDSA, TestPlatform)
       return deployer.deploy(TestPlatform, TestToken.address)
     }).then(() => {
       let platformInstance = TestPlatform.at(TestPlatform.address)
