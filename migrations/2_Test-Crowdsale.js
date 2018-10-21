@@ -1,4 +1,4 @@
-let ECRecovery = artifacts.require('./ECRecovery.sol')
+let ECRecovery = artifacts.require('../node_modules/openzeppelin-solidity/test/cryptography/ECDSA.sol')
 let TestCrowdsale = artifacts.require('./TestCrowdsale.sol')
 let TestToken = artifacts.require('./TestToken.sol')
 let TestPlatform = artifacts.require('./TestPlatform.sol')

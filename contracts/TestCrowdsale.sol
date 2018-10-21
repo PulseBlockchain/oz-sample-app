@@ -1,7 +1,6 @@
 pragma solidity ^0.4.24;
 
 import './TestToken.sol';
-import './ECRecovery.sol';
 import 'openzeppelin-solidity/contracts/crowdsale/validation/CappedCrowdsale.sol';
 import 'openzeppelin-solidity/contracts/crowdsale/validation/TimedCrowdsale.sol';
 import 'openzeppelin-solidity/contracts/crowdsale/distribution/RefundableCrowdsale.sol';
