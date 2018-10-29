@@ -1,6 +1,7 @@
 pragma solidity ^0.4.24;
 
 import './TestToken.sol';
+import 'openzeppelin-solidity/contracts/crowdsale/validation/IndividuallyCappedCrowdsale.sol';
 import 'openzeppelin-solidity/contracts/crowdsale/validation/CappedCrowdsale.sol';
 import 'openzeppelin-solidity/contracts/crowdsale/validation/TimedCrowdsale.sol';
 import 'openzeppelin-solidity/contracts/crowdsale/distribution/RefundableCrowdsale.sol';
@@ -10,8 +11,9 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
 
 
-
-contract TestCrowdsale is CappedCrowdsale, RefundableCrowdsale, MintedCrowdsale, Ownable {
+// VL: 10/28: tests will fail if we make this IndividuallyCappedCrowdsale
+//contract TestCrowdsale is CappedCrowdsale, IndividuallyCappedCrowdsale, RefundableCrowdsale, MintedCrowdsale,  Ownable {
+contract TestCrowdsale is CappedCrowdsale, RefundableCrowdsale, MintedCrowdsale,  Ownable {
 
 
     // ICO Stage
