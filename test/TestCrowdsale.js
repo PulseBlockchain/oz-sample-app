@@ -2,7 +2,7 @@ import ether from './helpers/ether'
 import { advanceBlock } from './helpers/advanceToBlock'
 import { increaseTimeTo, duration } from './helpers/increaseTime'
 import EVMRevert from './helpers/EVMRevert'
-import hashMessage from './helpers/hashMessage'
+import {hashMessage, hashMessageMetamask} from './helpers/hashMessage'
 // thanks: https://github.com/OpenZeppelin/openzeppelin-solidity/tree/master/test/helpers
 
 import { private_keys as PRIVATE_KEYS } from '../ganache-accounts.json'
@@ -22,7 +22,7 @@ const TestCrowdsale = artifacts.require('TestCrowdsale')
 const TestToken = artifacts.require('TestToken')
 const TestPlatform = artifacts.require('TestPlatform')
 
-contract('TestPlatform', function ([owner, wallet, teamFund, growthFund, bountyFund, buyer, seller1, seller2, gasFund, foundationFund, bonusFund]) {
+contract('ICO Signature and Platform Tests', function ([owner, wallet, teamFund, growthFund, bountyFund, buyer, seller1, seller2, gasFund, foundationFund, bonusFund]) {
   let preRate = 30400, PRE_RATE, rate = 15200, RATE, GOAL, CAP
   let multiplier
   let crowdsale
@@ -34,7 +34,7 @@ contract('TestPlatform', function ([owner, wallet, teamFund, growthFund, bountyF
 
   let platform
   // const web3SendPromisified = promisify(web3.currentProvider.sendAsync)
-  const helloAlice = 'Hello Alice'
+  const helloAlice = 'Hi Alice'
 
   before(async () => {
     // Advance to the next block to correctly read time in the solidity "now" function interpreted by ganache
@@ -43,6 +43,7 @@ contract('TestPlatform', function ([owner, wallet, teamFund, growthFund, bountyF
     crowdsale = await TestCrowdsale.deployed()
     const tokenAddress = await crowdsale.token.call()
     token = TestToken.at(tokenAddress)
+    // await token.addMinter(crowdsale.address)
     multiplier = 10 ** (await token.decimals())
     rate = await crowdsale.finalRate()
     RATE = new BigNumber(rate)
@@ -176,6 +177,26 @@ contract('TestPlatform', function ([owner, wallet, teamFund, growthFund, bountyF
     })
   })
   describe('Signature Tests', function () {
+    it('Signature Hacking', async () => {
+      const message = 'Hi Alice'
+      const signAddress = '0xdf08f82de32b8d460adbe8d72043e3a7e25a3b39'
+      const privateKey = '2bdd21761a483f71054e14f5b827213567971c676928d9a1808cbfa4b7501200'
+
+      /*
+       signature below was obtained via code and live demo linked at
+       https://github.com/PulseBlockchain/js-eth-personal-sign-examples
+       (https://github.com/PulseBlockchain/js-eth-personal-sign-examples/blob/695d4b7c659bf59ae55bbc9291186a3a128fab6f/index.js#L19)
+       using web.personal.sign. Can get the same via https://www.mycrypto.com/sign-and-verify-message/sign
+        */
+      const sig = '0x4f119a7d11506784657816ae2ec055170943416dc7982d7ab298addb3ae1cf6046fbda59da911e897a23ec0b217f69a87b4a190d2d47ed7dfd10fcce6f401ea81b'
+
+      const { v, r, s } = ethUtil.fromRpcSig(sig)
+      // https://gist.github.com/alexanderattar/29bef134239d5760b8d1fcc310b632be
+      const hash = hashMessageMetamask(message)
+      const recovered = await platform.recover(hash, sig)
+      assert.equal(signAddress, recovered, 'Recovered address should be same as signAddress')
+    })
+
     it('Should recover signer by calling a solidity contract', async () => {
       const message = helloAlice
       const signAddress = owner
@@ -200,18 +221,35 @@ contract('TestPlatform', function ([owner, wallet, teamFund, growthFund, bountyF
     })
 
     it('Should recover signer typed data with  eth-sig-util', async () => {
-      const msgParams = [
-        {
-          type: 'string',
-          name: 'Message',
-          value: 'Hi, Alice!'
+      const typedData = {
+        types: {
+          EIP712Domain: [
+            { name: 'name', type: 'string' },
+            { name: 'version', type: 'string' },
+            { name: 'chainId', type: 'uint256' },
+            { name: 'verifyingContract', type: 'address' }
+          ],
+          Person: [
+            { name: 'name', type: 'string' },
+            { name: 'wallet', type: 'address' }
+          ],
+          Mail: [
+            { name: 'from', type: 'Person' },
+            { name: 'to', type: 'Person' },
+            { name: 'contents', type: 'string' }
+          ]
         },
-        {
-          type: 'uint32',
-          name: 'A number',
-          value: '1337'
+        primaryType: 'Person',
+        domain: {
+          name: 'Person chat',
+          version: '1',
+          chainId: 1
+        },
+        message: {
+          name: 'Testing',
+          wallet: '0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826'
         }
-      ]
+      }
 
       /*
         const hash = sigUtil.typedSignatureHash(msgParams)
@@ -220,8 +258,8 @@ contract('TestPlatform', function ([owner, wallet, teamFund, growthFund, bountyF
       const signAddress = owner
       const keyOnly = PRIVATE_KEYS[signAddress]
       const pkeyBuffer = Buffer.from(keyOnly, 'hex')
-      const sig = sigUtil.signTypedData(pkeyBuffer, {data: msgParams})
-      const recovered = sigUtil.recoverTypedSignature({data: msgParams, sig: sig})
+      const sig = sigUtil.signTypedData(pkeyBuffer, {data: typedData})
+      const recovered = sigUtil.recoverTypedSignature({data: typedData, sig: sig})
       assert.equal(signAddress, recovered, 'Recovered address should be same as signAddress')
     })
   })
@@ -248,7 +286,7 @@ contract('TestPlatform', function ([owner, wallet, teamFund, growthFund, bountyF
         const sig = web3.eth.sign(bid.seller, web3.sha3(message))
         const hash = hashMessage(message)
         // console.log(`Seller ${bid.seller} Signature ${sig} and hash ${hash}`)
-        await token.approve(platform.address, ether(100), {from: bid.seller})
+        await token.approve(platform.address, 100 * multiplier, {from: bid.seller})
         let before = await token.balanceOf(bid.seller)
         let status = await platform.sendBid(bir.id, bid.seller, bid.actionType, hash, sig, {from: platformContractOwner})
         // console.log(`Seller ${bid.seller} bid recorded with txHash = ${status.tx}`)

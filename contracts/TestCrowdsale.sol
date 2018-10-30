@@ -1,7 +1,7 @@
-pragma solidity ^0.4.23;
+pragma solidity ^0.4.24;
 
 import './TestToken.sol';
-import './ECRecovery.sol';
+import 'openzeppelin-solidity/contracts/crowdsale/validation/IndividuallyCappedCrowdsale.sol';
 import 'openzeppelin-solidity/contracts/crowdsale/validation/CappedCrowdsale.sol';
 import 'openzeppelin-solidity/contracts/crowdsale/validation/TimedCrowdsale.sol';
 import 'openzeppelin-solidity/contracts/crowdsale/distribution/RefundableCrowdsale.sol';
@@ -11,8 +11,9 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
 
 
-
-contract TestCrowdsale is CappedCrowdsale, RefundableCrowdsale, MintedCrowdsale, Ownable {
+// VL: 10/28: tests will fail if we make this IndividuallyCappedCrowdsale
+//contract TestCrowdsale is CappedCrowdsale, IndividuallyCappedCrowdsale, RefundableCrowdsale, MintedCrowdsale,  Ownable {
+contract TestCrowdsale is CappedCrowdsale, RefundableCrowdsale, MintedCrowdsale,  Ownable {
 
 
     // ICO Stage
@@ -59,9 +60,9 @@ contract TestCrowdsale is CappedCrowdsale, RefundableCrowdsale, MintedCrowdsale,
     TimedCrowdsale(_openingTime, _closingTime)
     RefundableCrowdsale(_goal)
     {
-        currentRate = _rate;
         //As goal needs to be met for a successful crowdsale
         //the value needs to less or equal than a cap which is limit for accepted funds
+        currentRate = _rate;
         require(_goal <= _cap);
     }
 
@@ -83,24 +84,21 @@ contract TestCrowdsale is CappedCrowdsale, RefundableCrowdsale, MintedCrowdsale,
 
         //1 ETH can buy 5 tokens in PreICO but only 2 during ICO
         if (stage == CrowdsaleStage.PreICO) {
-            setCurrentRate(preRate);
+            currentRate = preRate;
         } else if (stage == CrowdsaleStage.ICO) {
-            setCurrentRate(finalRate);
+            currentRate = finalRate;
         }
     }
 
-    // Change the current rate
-    function setCurrentRate(uint256 _rate) private {
-        currentRate = _rate;
-    }
-
-    function rate() public view returns(uint256) {
-        return currentRate;
+    function _getTokenAmount(uint256 weiAmount)
+    internal view returns (uint256)
+    {
+        return currentRate.mul(weiAmount);
     }
 
 
     function () external payable {
-        uint256 tokensThatWillBeMintedAfterPurchase = msg.value.mul(rate());
+        uint256 tokensThatWillBeMintedAfterPurchase = msg.value.mul(currentRate);
         if ((stage == CrowdsaleStage.PreICO) && (token().totalSupply() + tokensThatWillBeMintedAfterPurchase > totalTokensForSaleDuringPreICO)) {
             msg.sender.transfer(msg.value); // Refund them
             emit EthRefunded("PreICO Limit Hit", tokensThatWillBeMintedAfterPurchase);

@@ -1,8 +1,8 @@
-pragma solidity ^0.4.23;
+pragma solidity ^0.4.24;
 
 import 'openzeppelin-solidity/contracts/ownership/Ownable.sol';
 import 'openzeppelin-solidity/contracts/token/ERC20/ERC20.sol';
-import './ECRecovery.sol';
+import 'openzeppelin-solidity/contracts/cryptography/ECDSA.sol';
 import './TestEscrow.sol';
 
 contract TestPlatform is Ownable {
@@ -115,7 +115,7 @@ contract TestPlatform is Ownable {
         return true;
     }
 
-    using ECRecovery for bytes32;
+    using ECDSA for bytes32;
     function recover(bytes32 hash, bytes sig) public pure returns (address) {
         return hash.recover(sig);
     }
