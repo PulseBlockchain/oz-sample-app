@@ -21,6 +21,9 @@ require('chai')
 const TestCrowdsale = artifacts.require('TestCrowdsale')
 const TestToken = artifacts.require('TestToken')
 const TestPlatform = artifacts.require('TestPlatform')
+TestCrowdsale.numberFormat = 'BigNumber'
+TestToken.numberFormat = 'BigNumber'
+TestPlatform.numberFormat = 'BigNumber'
 
 contract('ICO Signature and Platform Tests', function ([owner, wallet, teamFund, growthFund, bountyFund, buyer, seller1, seller2, gasFund, foundationFund, bonusFund]) {
   let preRate = 30400, PRE_RATE, rate = 15200, RATE, GOAL, CAP
@@ -40,7 +43,13 @@ contract('ICO Signature and Platform Tests', function ([owner, wallet, teamFund,
     // Advance to the next block to correctly read time in the solidity "now" function interpreted by ganache
     await advanceBlock()
 
+    TestCrowdsale.numberFormat = 'BigNumber'
+    TestToken.numberFormat = 'BigNumber'
+    TestPlatform.numberFormat = 'BigNumber'
+    // TestEscrow.numberFormat = 'BigNumber'
+
     crowdsale = await TestCrowdsale.deployed()
+
     const tokenAddress = await crowdsale.token.call()
     token = TestToken.at(tokenAddress)
     // await token.addMinter(crowdsale.address)
