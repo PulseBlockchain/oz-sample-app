@@ -1,4 +1,6 @@
 pragma solidity ^0.4.24;
+// use this to send structs in and out of solidity functions
+pragma experimental ABIEncoderV2;
 
 import './TestToken.sol';
 import 'openzeppelin-solidity/contracts/crowdsale/validation/IndividuallyCappedCrowdsale.sol';
@@ -8,6 +10,7 @@ import 'openzeppelin-solidity/contracts/crowdsale/distribution/RefundableCrowdsa
 import 'openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol';
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20Mintable.sol";
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+
 
 
 

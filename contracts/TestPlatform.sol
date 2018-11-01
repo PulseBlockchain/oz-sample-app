@@ -1,9 +1,14 @@
 pragma solidity ^0.4.24;
+/*
+ use this to send structs in and out of solidity functions
+ https://github.com/ethereum/solidity/issues/3177
+*/
+pragma experimental ABIEncoderV2;
 
+import './TestEscrow.sol';
 import 'openzeppelin-solidity/contracts/ownership/Ownable.sol';
 import 'openzeppelin-solidity/contracts/token/ERC20/ERC20.sol';
 import 'openzeppelin-solidity/contracts/cryptography/ECDSA.sol';
-import './TestEscrow.sol';
 
 contract TestPlatform is Ownable {
 

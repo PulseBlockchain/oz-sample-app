@@ -2,6 +2,10 @@ let ECDSA = artifacts.require('../node_modules/openzeppelin-solidity/test/crypto
 let TestCrowdsale = artifacts.require('./TestCrowdsale.sol')
 let TestToken = artifacts.require('./TestToken.sol')
 let TestPlatform = artifacts.require('./TestPlatform.sol')
+const Web3 = require('node-sass-middleware')
+// const web3 = new Web3(new Web3.providers.HttpProvider(urlOrEngine))
+const web3 = new Web3('http://localhost:8545')
+const BigNumber = web3.BigNumber
 
 // thanks https://github.com/OpenZeppelin/openzeppelin-solidity/tree/master/test/helpers
 const duration = {
@@ -16,6 +20,7 @@ const duration = {
 const weiMultiplier = 10 ** 18
 
 module.exports = function (deployer) {
+  console.log(web3)
   const latestTime = web3.eth.getBlock('latest').timestamp
   const openingTime = latestTime + duration.weeks(1)
   const closingTime = openingTime + duration.weeks(1)
@@ -33,9 +38,9 @@ module.exports = function (deployer) {
         closingTime,
         15200,
         web3.eth.accounts[1],
-        40000 * weiMultiplier, // CAP ETH
+        new BigNumber(40000 * weiMultiplier), // CAP ETH
         TestToken.address,
-        28500 * weiMultiplier // GOAL = 38% of 75000
+        new BigNumber(28500 * weiMultiplier) // GOAL = 38% of 75000
       )
     }).then(() => {
       let tokenInstance = TestToken.at(TestToken.address)

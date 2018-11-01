@@ -3,7 +3,10 @@ import { advanceBlock } from './helpers/advanceToBlock'
 import { increaseTimeTo, duration } from './helpers/increaseTime'
 import EVMRevert from './helpers/EVMRevert'
 import {hashMessage, hashMessageMetamask} from './helpers/hashMessage'
+import Web3 from 'web3'
 // thanks: https://github.com/OpenZeppelin/openzeppelin-solidity/tree/master/test/helpers
+
+const web3 = new Web3('http://localhost:8545')
 
 import { private_keys as PRIVATE_KEYS } from '../ganache-accounts.json'
 
