@@ -19,9 +19,9 @@ const duration = {
 
 const weiMultiplier = 10 ** 18
 
-module.exports = function (deployer) {
+module.exports = async function (deployer) {
   console.log(web3)
-  const latestTime = web3.eth.getBlock('latest').timestamp
+  const latestTime = (await web3.eth.getBlock('latest')).timestamp
   const openingTime = latestTime + duration.weeks(1)
   const closingTime = openingTime + duration.weeks(1)
   const platformOwnerAddress = web3.eth.accounts[3] // growth fund.
