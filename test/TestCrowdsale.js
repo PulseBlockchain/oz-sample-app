@@ -5,16 +5,13 @@ import EVMRevert from './helpers/EVMRevert'
 import {hashMessage, hashMessageMetamask} from './helpers/hashMessage'
 import Web3 from 'web3'
 // thanks: https://github.com/OpenZeppelin/openzeppelin-solidity/tree/master/test/helpers
-
-const web3 = new Web3('http://localhost:8545')
-
 import { private_keys as PRIVATE_KEYS } from '../ganache-accounts.json'
-
 import sigUtil from 'eth-sig-util'
 import ethUtil from 'ethereumjs-util'
 import * as bir from './data/BIR-algo-test'
 
-const BigNumber = web3.BigNumber
+const web3 = new Web3('http://localhost:8545')
+const BigNumber = require('big-number')
 
 require('chai')
   .use(require('chai-as-promised'))
